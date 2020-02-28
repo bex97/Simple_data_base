@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 
 namespace Rejestracja_użytkownikow
 {
-    //Delegaty
-    public delegate void Connection(ConnectionArgs args);
+    
+
 
     class ConnectionSQL
     {
         public static event Connection ConnectionEvent;
 
+        //Łączenie z bazą danych
         public static System.Data.SqlClient.SqlConnection connect_to_database(string connection_string)
         {
             System.Data.SqlClient.SqlConnection conn = new System.Data.SqlClient.SqlConnection(connection_string);
@@ -38,7 +39,7 @@ namespace Rejestracja_użytkownikow
 
         private static void ConnectionSQL_ConnectionEvent(ConnectionArgs args)
         {
-            System.Windows.Forms.MessageBox.Show(args.message + "\nConnected to: " + args.connect_to, "Connection state", System.Windows.Forms.MessageBoxButtons.OK);
+            System.Windows.Forms.MessageBox.Show("Connected to: " + args.connect_to, "Connection state", System.Windows.Forms.MessageBoxButtons.OK);
         }
 
         private static void ErrorConnectionSQL_ConnectionEvent(ConnectionArgs args)
