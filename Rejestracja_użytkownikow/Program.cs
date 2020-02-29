@@ -22,6 +22,8 @@ namespace Rejestracja_użytkownikow
             string user_name = Console.ReadLine();
             if (user_name == "new user")
             {
+                Console.Clear();
+                Console.WriteLine();
                 Users new_user = new Users();
             }
             else
@@ -34,8 +36,7 @@ namespace Rejestracja_użytkownikow
                 }
                 catch (BadPasswordException e)
                 {
-                    DataExchangeSQL.Login += DataExchangeSQL.NotSuccesfull_login;
-                    DataExchangeSQL.OnLogin(e);
+                    MessageBox.Show(e.Message, "Stan logowania", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 
             }

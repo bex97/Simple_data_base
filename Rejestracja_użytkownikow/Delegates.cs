@@ -10,7 +10,7 @@ namespace Rejestracja_użytkownikow
     //Obsługa połączenia
     public delegate void Connection(ConnectionArgs args);
     //Obsługa logowania
-    public delegate void LoginState(BadPasswordException e);
+    public delegate void LoginState();
 
     class Delegates
     {

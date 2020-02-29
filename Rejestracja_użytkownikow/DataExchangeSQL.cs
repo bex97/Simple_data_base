@@ -16,11 +16,18 @@ namespace Rejestracja_użytkownikow
             string get_info_string = "SELECT Password From Users WHERE UserName='"+user_name+"'";
             var cmd = new System.Data.SqlClient.SqlCommand(get_info_string, conn);
             var result = cmd.ExecuteReader();
-            if (result.HasRows && result.GetValue(0).ToString() == password)
+            if (result.HasRows)
             {
-                 Login += Succesfull_login;
-                 OnLogin(new BadPasswordException(""));
-                 Login -= Succesfull_login;
+                if(result.GetValue(0).ToString() == password)
+                {
+                    Login += Succesfull_login;
+                    OnLogin();
+                    Login -= Succesfull_login;
+                }
+                else
+                {
+                    throw new BadPasswordException("Podano zły login lub hasło");
+                }
             }
             else
             {
@@ -29,18 +36,13 @@ namespace Rejestracja_użytkownikow
             return false;
         }
 
-        static public void OnLogin(BadPasswordException e)
+        static public void OnLogin()
         {
-            Login?.Invoke(e);
+            Login?.Invoke();
         }
-        static public void Succesfull_login(BadPasswordException e)
+        static public void Succesfull_login()
         {
             MessageBox.Show("Zalogowałeś się!", "Stan logowania", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        static public void NotSuccesfull_login(BadPasswordException e)
-        {
-            MessageBox.Show(e.Message, "Stan logowania", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
     }
