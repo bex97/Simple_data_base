@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Rejestracja_użytkownikow
 {
-    class Errors:Exception
+    class Errors : Exception
     {
 
     }
@@ -25,5 +25,10 @@ namespace Rejestracja_użytkownikow
         {
             this.message = s;
         }
+    }
+
+    class UserNameAlreadyExistException : Exception
+    {
+        public new string Message = "Uzytkownik o podanej nazwie juz istnieje";
     }
 }

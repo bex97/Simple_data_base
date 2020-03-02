@@ -16,3 +16,12 @@ D:\Projekty\C#\Rejestracja_użytkownikow\Rejestracja_użytkownikow\obj\Debug\Rej
 D:\Projekty\C#\Rejestracja_użytkownikow\Rejestracja_użytkownikow\obj\Debug\Rejestracja_użytkownikow.csproj.CoreCompileInputs.cache
 D:\Projekty\C#\Rejestracja_użytkownikow\Rejestracja_użytkownikow\obj\Debug\Rejestracja_użytkownikow.exe
 D:\Projekty\C#\Rejestracja_użytkownikow\Rejestracja_użytkownikow\obj\Debug\Rejestracja_użytkownikow.pdb
+C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\bin\Debug\Database1.mdf
+C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\bin\Debug\Database1_log.ldf
+C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\bin\Debug\Rejestracja_użytkownikow.exe.config
+C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\bin\Debug\Rejestracja_użytkownikow.exe
+C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\bin\Debug\Rejestracja_użytkownikow.pdb
+C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\obj\Debug\Rejestracja_użytkownikow.csprojAssemblyReference.cache
+C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\obj\Debug\Rejestracja_użytkownikow.csproj.CoreCompileInputs.cache
+C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\obj\Debug\Rejestracja_użytkownikow.exe
+C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\obj\Debug\Rejestracja_użytkownikow.pdb

@@ -72,6 +72,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Security.cs" />
     <Compile Include="Users.cs" />
   </ItemGroup>
   <ItemGroup>

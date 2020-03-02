@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace Rejestracja_użytkownikow
     class Users
     {
         string user_name;
-        string password;
+        SecureString password;
         string real_name;
         int age;
 
@@ -18,7 +19,7 @@ namespace Rejestracja_użytkownikow
             Console.Write("User name: ");
             user_name = Console.ReadLine();
             Console.Write("Password: ");
-            password = Console.ReadLine();
+            password = Security.hidePassword();
             Console.Write("Real name: ");
             real_name = Console.ReadLine();
             Console.Write("Age: ");
@@ -33,7 +34,7 @@ namespace Rejestracja_użytkownikow
         {
             return real_name;
         }
-        public string get_password()
+        public SecureString get_password()
         {
             return password;
         }

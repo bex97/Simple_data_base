@@ -11,6 +11,8 @@ namespace Rejestracja_użytkownikow
     public delegate void Connection(ConnectionArgs args);
     //Obsługa logowania
     public delegate void LoginState();
+    //Obsługa rejestracji
+    public delegate void RegistrationState();
 
     class Delegates
     {
