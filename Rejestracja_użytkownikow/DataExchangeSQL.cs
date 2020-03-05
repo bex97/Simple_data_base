@@ -16,14 +16,15 @@ namespace Rejestracja_użytkownikow
 
         static public bool insertIntoUsersTable(Users new_user, System.Data.SqlClient.SqlConnection conn)
         {
-            string insert = "INSERT INTO Users_info (UserName, Password, RealName, Age) " +
-                                "VALUES (@UserName, @Password, @RealName, @Age)";
+            string insert = "INSERT INTO Users_info (UserName, Password, RealName, Age, Email) " +
+                                "VALUES (@UserName, @Password, @RealName, @Age, @Email)";
 
             var com = new System.Data.SqlClient.SqlCommand(insert, conn);
             com.Parameters.AddWithValue("@UserName", new_user.get_user_name());
             com.Parameters.AddWithValue("@Password", new NetworkCredential("", new_user.get_password()).Password);
             com.Parameters.AddWithValue("@RealName", new_user.get_real_name());
             com.Parameters.AddWithValue("@Age", new_user.get_age());
+            com.Parameters.AddWithValue("@Email", new_user.get_email());
             try
             {
                 com.ExecuteNonQuery();

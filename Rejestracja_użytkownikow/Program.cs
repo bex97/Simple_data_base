@@ -8,7 +8,6 @@ using System.Windows.Forms;
 
 namespace Rejestracja_użytkownikow
 {
-
     class Program
     {
         
@@ -17,8 +16,11 @@ namespace Rejestracja_użytkownikow
             string conn_string = @" Data Source = (LocalDB)\MSSQLLocalDB; " +
                                  @" AttachDbFilename = C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\Database1.mdf;" +
                                  @" Integrated Security = True";
-            string user_name;
+
+
+            string user_name = string.Empty;
             System.Data.SqlClient.SqlConnection conn =  ConnectionSQL.connect_to_database(conn_string);
+            
             bool login_state = false;
             do
             {
@@ -46,6 +48,7 @@ namespace Rejestracja_użytkownikow
                 }
                 else
                 {
+                    sd.Send(user_name);
                     Console.Write("Password: ");
                     SecureString password = Security.hidePassword();
                     try
@@ -64,24 +67,20 @@ namespace Rejestracja_użytkownikow
 
 
             Console.Clear();
-            Console.WriteLine("Witaj " + user_name + "\nCo chcialbys/chcialabys zrobić?\n1. Utworz wlasna domene e-mail\n2. Wyslij e-mail" +
-                              "\n3. Sprawdz skrzynke pocztowa");
+            Console.WriteLine("Witaj " + user_name + "\nCo chcialbys/chcialabys zrobić?\n1. Skrzynka pocztowa\n2. Serwer FTP");
             System.ConsoleKeyInfo keyInfo = Console.ReadKey();
             switch (keyInfo.Key)
             {
                 case ConsoleKey.D1:
                     {
-                        Console.WriteLine("\b\bTworzysz wlasna domene e-mail");
+                        Console.Clear();
+                        Console.WriteLine("\b\bE-mail");
                         break;
                     }
                 case ConsoleKey.D2:
                     {
-                        Console.WriteLine("\b\bWysylasz email");
-                        break;
-                    }
-                case ConsoleKey.D3:
-                    {
-                        Console.WriteLine("\b\bSprawdzam skrzynke");
+                        Console.Clear();
+                        Console.WriteLine("\b\bSerwerFTP");
                         break;
                     }
             }

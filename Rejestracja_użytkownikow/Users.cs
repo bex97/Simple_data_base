@@ -13,6 +13,7 @@ namespace Rejestracja_użytkownikow
         SecureString password;
         string real_name;
         int age;
+        string email;
 
         public Users()
         {
@@ -24,6 +25,8 @@ namespace Rejestracja_użytkownikow
             real_name = Console.ReadLine();
             Console.Write("Age: ");
             age = Convert.ToInt32(Console.ReadLine());
+            Console.Write("Email: ");
+            email = Console.ReadLine();
         }
 
         public string get_user_name()
@@ -44,6 +47,10 @@ namespace Rejestracja_użytkownikow
             {
                 return age;
             }
+        }
+        public string get_email()
+        {
+            return this.email;
         }
     }
 }
