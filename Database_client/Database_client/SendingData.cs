@@ -38,6 +38,7 @@ namespace Rejestracja_użytkownikow
 
         public void send(string message)
         {
+            int percentage;
             byte[] data_ASCII = System.Text.Encoding.ASCII.GetBytes(message);
             byte[] data_length = BitConverter.GetBytes(data_ASCII.Length);
             byte[] package = new byte[4 + message.Length];
@@ -48,6 +49,7 @@ namespace Rejestracja_użytkownikow
             int bytes_left = data_ASCII.Length, bytes_send = 0, buffer_size = 1024;
 
             ns.Write(package, 0, 4);
+            percentage = (int)((double)bytes_send / (double)message.Length) * 100;
             while (bytes_left > 0)
             {
                 try
@@ -57,8 +59,10 @@ namespace Rejestracja_użytkownikow
                     ns.Write(package, bytes_send+4, next_package_size);
                     bytes_send += next_package_size;
                     bytes_left -= next_package_size;
-                    if (bytes_send / message.Length * 100 > 9) Console.Write("\b\b\b\b\b\bData sent: {0}%", bytes_send / message.Length * 100);
+                    Console.WriteLine("Data send: 0%");
+                    if (percentage > 9) Console.Write("\b\b\b\b\b\bData sent: {0}%", bytes_send / message.Length * 100);
                     else Console.Write("\b\b\b\bData sent: {0}%", bytes_send / message.Length * 100);
+                    percentage = (int)((double)bytes_send / (double)message.Length) * 100;
                 }
                 catch (Exception e)
                 {
@@ -73,13 +77,14 @@ namespace Rejestracja_użytkownikow
 
         public void send(Users user)
         {
+            int percentage = 0;
             byte[] user_name = System.Text.Encoding.ASCII.GetBytes(user.getUserName()+"/");
             byte[] password = System.Text.Encoding.ASCII.GetBytes(user.getPassword()+"/");
             byte[] real_name = System.Text.Encoding.ASCII.GetBytes(user.getRealName() + "/");
-            byte[] age = BitConverter.GetBytes(user.getAge() + '/');
+            byte[] age = System.Text.Encoding.ASCII.GetBytes(user.getAge() + "/");
             byte[] email = System.Text.Encoding.ASCII.GetBytes(user.getEmail() + "/");
 
-            byte[] data_length = BitConverter.GetBytes(user_name.Length + password.Length + real_name.Length + age.Length+email.Length+5);
+            byte[] data_length = BitConverter.GetBytes(user_name.Length + password.Length + real_name.Length + age.Length + email.Length + 5);
             byte[] package = new byte[4 + data_length.Length];
             data_length.CopyTo(package, 0);
             user_name.CopyTo(package, 4);
@@ -93,6 +98,7 @@ namespace Rejestracja_użytkownikow
             int bytes_left = data_length.Length, bytes_send = 0, buffer_size = 1024;
 
             ns.Write(package, 0, 4);
+            percentage = (int)((double)bytes_send / (double)data_length.Length) * 100;
             while (bytes_left > 0)
             {
                 try
@@ -101,8 +107,11 @@ namespace Rejestracja_użytkownikow
                     ns.Write(package, bytes_send+4, next_package_size);
                     bytes_send += next_package_size;
                     bytes_left -= next_package_size;
-                    if (bytes_send / data_length.Length * 100 > 9) Console.Write("\b\b\b\b\b\bData sent: {0}%", bytes_send / data_length.Length * 100);
-                    else Console.Write("\b\b\b\bData sent: {0}%", bytes_send / data_length.Length * 100);
+                    Console.WriteLine("Data send: 0%" +
+                        "");
+                    if (percentage > 9) Console.Write("\b\b\b\b\b\b{0}%", bytes_send / data_length.Length * 100);
+                    else Console.Write("\b\b\b\b{0}%", bytes_send / data_length.Length * 100);
+                    percentage = (int)((double)bytes_send / (double)data_length.Length) * 100;
                 }
                 catch (Exception e)
                 {
@@ -116,7 +125,7 @@ namespace Rejestracja_użytkownikow
 
         public void send(BinaryReader reader, int size)
         {
-            
+            int percentage = 0;
             int buffer_size = 1024;
             byte[] data_ASCII = reader.ReadBytes(buffer_size);
             byte[] data_length = BitConverter.GetBytes(size);
@@ -128,16 +137,19 @@ namespace Rejestracja_użytkownikow
             int bytes_left = size, bytes_send = 0;
 
             ns.Write(package, 0, 4);
+            percentage =(int)((double)bytes_send / (double)size) * 100;
             while (bytes_left > 0)
             {
                 try
                 {
                     int next_package_size = bytes_left > buffer_size ? buffer_size : bytes_left;
-                    ns.Write(package, bytes_send, next_package_size);
+                    ns.Write(package, bytes_send+4, next_package_size);
                     bytes_send += next_package_size;
                     bytes_left -= next_package_size;
-                    if (bytes_send / size * 100 > 9) Console.Write("/b/b/b/b/b/bData sent: {0}%", bytes_send / size * 100);
-                    else Console.Write("/b/b/b/bData sent: {0}%", bytes_send / size * 100);
+                    Console.WriteLine("Data send: 0%");
+                    if (bytes_send / size * 100 > 9) Console.Write("\b\b\b\b\b\b\b\b{0}%", (bytes_send / size * 100));
+                    else Console.Write("\b\b\b\b{0}%", (bytes_send / size * 100));
+                    percentage = (int)((double)bytes_send / (double)size) * 100;
                     data_ASCII = reader.ReadBytes(next_package_size);
                 }
                 catch (Exception e)
@@ -152,6 +164,7 @@ namespace Rejestracja_użytkownikow
         public string recive()
         {
             string message1 = string.Empty;
+            int percentage = 0;
             
             byte[] size = new byte[4];
             NetworkStream ns = client.GetStream();
@@ -165,9 +178,12 @@ namespace Rejestracja_użytkownikow
 
             byte[] e_flag = new byte[1];
             ns.Read(e_flag, 0, 1);
+
             exception_flag = BitConverter.ToBoolean(e_flag, 0);
 
             byte[] data_ASCII = new byte[data_size];
+
+            percentage = (int)((double)data_recived / (double)data_size) * 100;
             while (data_size - data_recived > 0)
             {
                 try
@@ -176,8 +192,10 @@ namespace Rejestracja_użytkownikow
                     ns.Read(data_ASCII, 0, next_pacakge_size);
                     data_recived += next_pacakge_size;
                     message1 += System.Text.Encoding.ASCII.GetString(data_ASCII);
-                    if (data_recived / data_size * 100 > 9) Console.Write("\b\b\b\b\b\bData recived: {0}%", data_recived / data_size * 100);
-                    else Console.Write("\b\b\b\bData recived: {0}%", data_recived / data_size * 100);
+                    Console.WriteLine("Data recived: 0%");
+                    if (percentage > 9) Console.Write("\b\b\b\b\b\b{0}%", data_recived / data_size * 100);
+                    else Console.Write("\b\b\b\b{0}%", data_recived / data_size * 100);
+                    percentage = data_recived / data_size * 100;
                 }
                 catch (Exception e)
                 {

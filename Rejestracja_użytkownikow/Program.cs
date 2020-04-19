@@ -19,7 +19,7 @@ namespace Rejestracja_użytkownikow
             
 
             string conn_string = @" Data Source = (LocalDB)\MSSQLLocalDB; " +
-                                 @" AttachDbFilename = C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\Database1.mdf;" +
+                                 @" AttachDbFilename = D:\\Projekty\C#\Rejestracja_użytkownikow\Rejestracja_użytkownikow\Database1.mdf;" +
                                  @" Integrated Security = True";
             System.Data.SqlClient.SqlConnection conn =  ConnectionSQL.connectToDatabase(conn_string);
 

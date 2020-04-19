@@ -60,11 +60,11 @@ namespace Rejestracja_użytkownikow
                     {
                         //Ukrycie hasła
                         Console.Write("Password: ");
-                        //string hash_password = Security.ComputeSha256Hash(Security.hidePassword());
-                        string hash_password = Console.ReadLine();
+                        string hash_password = Security.ComputeSha256Hash(Security.hidePassword());
+                        //string hash_password = Console.ReadLine();
                         try
                         {
-                            //Wysyłanie user_name i password przez TCP/IP
+                            //Wysyłanie hash_password przez TCP/IP
                             cl.send(hash_password);
 
                             //Sprawdzenie odpowiedzi z serwera
