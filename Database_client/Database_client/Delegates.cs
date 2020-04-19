@@ -13,8 +13,4 @@ namespace Rejestracja_użytkownikow
     public delegate void LoginState();
     //Obsługa rejestracji
     public delegate void RegistrationState();
-
-    class Delegates
-    {
-    }
 }

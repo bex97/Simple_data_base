@@ -20,11 +20,11 @@ namespace Rejestracja_użytkownikow
                                 "VALUES (@UserName, @Password, @RealName, @Age, @Email)";
 
             var com = new System.Data.SqlClient.SqlCommand(insert, conn);
-            com.Parameters.AddWithValue("@UserName", new_user.get_user_name());
-            com.Parameters.AddWithValue("@Password", new NetworkCredential("", new_user.get_password()).Password);
-            com.Parameters.AddWithValue("@RealName", new_user.get_real_name());
-            com.Parameters.AddWithValue("@Age", new_user.get_age());
-            com.Parameters.AddWithValue("@Email", new_user.get_email());
+            com.Parameters.AddWithValue("@UserName", new_user.getUserName());
+            com.Parameters.AddWithValue("@Password", new NetworkCredential("", new_user.getPassword()).Password);
+            com.Parameters.AddWithValue("@RealName", new_user.getRealName());
+            com.Parameters.AddWithValue("@Age", new_user.getAge());
+            com.Parameters.AddWithValue("@Email", new_user.getEmail());
             try
             {
                 com.ExecuteNonQuery();
@@ -38,13 +38,13 @@ namespace Rejestracja_użytkownikow
             return false;
         }
 
-        static public bool insertIntoUsers_infoTable(Users new_user, System.Data.SqlClient.SqlConnection conn)
+        static public bool insertIntoUsersInfoTable(Users new_user, System.Data.SqlClient.SqlConnection conn)
         {
             string insert2 = "INSERT INTO Users (UserName, Password) " +
                                  "VALUES (@UserName, @Password)";
             var com = new System.Data.SqlClient.SqlCommand(insert2, conn);
-            com.Parameters.AddWithValue("@UserName", new_user.get_user_name());
-            com.Parameters.AddWithValue("@Password", new NetworkCredential("", new_user.get_password()).Password);
+            com.Parameters.AddWithValue("@UserName", new_user.getUserName());
+            com.Parameters.AddWithValue("@Password", new NetworkCredential("", new_user.getPassword()).Password);
             try
             {
                 com.ExecuteNonQuery();
@@ -68,7 +68,7 @@ namespace Rejestracja_użytkownikow
             if (result.HasRows) 
             {
                 result.Read();
-                if(Security.IsEqual(new NetworkCredential("",result.GetValue(0).ToString()).SecurePassword,password))
+                if(Security.isEqual(new NetworkCredential("",result.GetValue(0).ToString()).SecurePassword,password))
                 {
                     
                     Login += Succesfull_login;
@@ -90,9 +90,9 @@ namespace Rejestracja_użytkownikow
             }
         }
 
-        static public bool New_user_register(Users new_user, System.Data.SqlClient.SqlConnection conn)
+        static public bool newUserRegister(Users new_user, System.Data.SqlClient.SqlConnection conn)
         {
-            string get_info_string = "SELECT UserName From Users WHERE UserName='" + new_user.get_user_name() + "'";
+            string get_info_string = "SELECT UserName From Users WHERE UserName='" + new_user.getUserName() + "'";
             var cmd = new System.Data.SqlClient.SqlCommand(get_info_string, conn);
             System.Data.SqlClient.SqlDataReader result = cmd.ExecuteReader();
 
@@ -105,7 +105,7 @@ namespace Rejestracja_użytkownikow
             {
                 result.Close();
                 if (!insertIntoUsersTable(new_user, conn)) return false;
-                if (!insertIntoUsers_infoTable(new_user, conn)) return false;
+                if (!insertIntoUsersInfoTable(new_user, conn)) return false;
 
                 Register += Succesfull_register;
                 OnRegister();

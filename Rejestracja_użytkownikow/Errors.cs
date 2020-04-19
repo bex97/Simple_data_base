@@ -25,6 +25,7 @@ namespace Rejestracja_użytkownikow
         {
             this.message = s;
         }
+        
     }
 
     class UserNameAlreadyExistException : Exception

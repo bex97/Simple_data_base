@@ -5,26 +5,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Net;
+using System.Security.Cryptography;
 
 namespace Rejestracja_użytkownikow
 {
     class Security
     {
-        static public SecureString hidePassword()
+        static public string hidePassword()
         {
             ConsoleKeyInfo key;
-            SecureString password = new SecureString();
+            string password = "";
             do
             {
                 key = Console.ReadKey(true);
                 if (!char.IsControl(key.KeyChar))
                 {
-                    password.AppendChar(key.KeyChar);
+                    password+=key.KeyChar;
                     Console.Write("*");
                 }
                 if(key.Key == ConsoleKey.Backspace && password.Length>0)
                 {
-                    password.RemoveAt(password.Length - 1);
+                    password.Remove(password.Length-1);
                     Console.Write("\b \b");
                 }
 
@@ -33,33 +35,23 @@ namespace Rejestracja_użytkownikow
             return password;
         }
 
-        static public bool IsEqual(SecureString ss1, SecureString ss2)
+        static public string ComputeSha256Hash(string rawData)
         {
-            IntPtr bstr1 = IntPtr.Zero;
-            IntPtr bstr2 = IntPtr.Zero;
-            try
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
             {
-                bstr1 = Marshal.SecureStringToBSTR(ss1);
-                bstr2 = Marshal.SecureStringToBSTR(ss2);
-                int length1 = Marshal.ReadInt32(bstr1, -4);
-                int length2 = Marshal.ReadInt32(bstr2, -4);
-                if (length1 == length2)
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
                 {
-                    for (int x = 0; x < length1; ++x)
-                    {
-                        byte b1 = Marshal.ReadByte(bstr1, x);
-                        byte b2 = Marshal.ReadByte(bstr2, x);
-                        if (b1 != b2) return false;
-                    }
+                    builder.Append(bytes[i].ToString("x2"));
                 }
-                else return false;
-                return true;
-            }
-            finally
-            {
-                if (bstr2 != IntPtr.Zero) Marshal.ZeroFreeBSTR(bstr2);
-                if (bstr1 != IntPtr.Zero) Marshal.ZeroFreeBSTR(bstr1);
+                return builder.ToString();
             }
         }
+
     }
 }

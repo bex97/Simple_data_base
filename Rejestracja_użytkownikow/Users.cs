@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Rejestracja_użytkownikow
 {
-    class Users
+    public class Users
     {
         string user_name;
         SecureString password;
@@ -15,42 +15,42 @@ namespace Rejestracja_użytkownikow
         int age;
         string email;
 
-        public Users()
+        public Users(string un, SecureString pass, string rn, int a, string e)
         {
-            Console.Write("User name: ");
-            user_name = Console.ReadLine();
-            Console.Write("Password: ");
-            password = Security.hidePassword();
-            Console.Write("Real name: ");
-            real_name = Console.ReadLine();
-            Console.Write("Age: ");
-            age = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Email: ");
-            email = Console.ReadLine();
+            user_name = un;
+            password = pass;
+            real_name = rn;
+            age = a;
+            email = e;
         }
 
-        public string get_user_name()
+        public string getUserName()
         {
             return user_name;
         }
-        public string get_real_name()
+        public string getRealName()
         {
             return real_name;
         }
-        public SecureString get_password()
+        public SecureString getPassword()
         {
             return password;
         }
-        public int get_age()
+        public int getAge()
         {
-            get:
-            {
                 return age;
-            }
         }
-        public string get_email()
+        public string getEmail()
         {
             return this.email;
+        }
+        public void toString()
+        {
+            Console.WriteLine(user_name);
+            Console.WriteLine(password);
+            Console.WriteLine(real_name);
+            Console.WriteLine(age);
+            Console.WriteLine(email);
         }
     }
 }

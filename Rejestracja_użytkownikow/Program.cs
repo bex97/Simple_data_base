@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Security;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,82 +14,62 @@ namespace Rejestracja_użytkownikow
         
         static void Main(string[] args)
         {
+            Serwer sw = new Serwer(IPAddress.Any);
+            sw.connect();
+            
+
             string conn_string = @" Data Source = (LocalDB)\MSSQLLocalDB; " +
                                  @" AttachDbFilename = C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\Database1.mdf;" +
                                  @" Integrated Security = True";
+            System.Data.SqlClient.SqlConnection conn =  ConnectionSQL.connectToDatabase(conn_string);
 
-
-            string user_name = string.Empty;
-            System.Data.SqlClient.SqlConnection conn =  ConnectionSQL.connect_to_database(conn_string);
             
             bool login_state = false;
             do
             {
-                Console.WriteLine("If u don't have an account please type \"new user\"");
-                Console.Write("Login: ");
-                user_name = Console.ReadLine();
+                string user_name = sw.recive();
                 if (user_name == "new user")
                 {
                     bool register_state = false;
                     do
                     {
-                        Console.Clear();
-                        Users new_user = new Users();
+                        Users new_user;
                         try
                         {
-                            register_state = DataExchangeSQL.New_user_register(new_user, conn);
+                            new_user = sw.reciveUser();
+                            new_user.toString();
+                            DataExchangeSQL.newUserRegister(new_user, conn);
                         }
                         catch (UserNameAlreadyExistException e)
                         {
                             MessageBox.Show(e.Message, "Stan rejestracji", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            Console.Clear();
-                        } Console.Clear();
+                            sw.send(e.Message, true);
+                        }
                         
                     } while (!register_state);
                 }
                 else
                 {
-                    sd.Send(user_name);
-                    Console.Write("Password: ");
-                    SecureString password = Security.hidePassword();
+                    SecureString password;
                     try
                     {
+                        password = Security.stringToSecureString(sw.recive());
                         DataExchangeSQL.GetAccesToAccount(user_name, password, conn);
                         login_state = true;
+                        sw.send("true", false);
                     }
                     catch (BadPasswordException e)
                     {
                         MessageBox.Show(e.Message, "Stan logowania", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        sw.send(e.Message, true);
                         Console.Clear();
                     }
 
                 }
             } while (!login_state);
 
-
-            Console.Clear();
-            Console.WriteLine("Witaj " + user_name + "\nCo chcialbys/chcialabys zrobić?\n1. Skrzynka pocztowa\n2. Serwer FTP");
-            System.ConsoleKeyInfo keyInfo = Console.ReadKey();
-            switch (keyInfo.Key)
-            {
-                case ConsoleKey.D1:
-                    {
-                        Console.Clear();
-                        Console.WriteLine("\b\bE-mail");
-                        break;
-                    }
-                case ConsoleKey.D2:
-                    {
-                        Console.Clear();
-                        Console.WriteLine("\b\bSerwerFTP");
-                        break;
-                    }
-            }
-            
-
-
-
-
+            sw.recive_file();
+           
             Console.ReadKey();
 
         }

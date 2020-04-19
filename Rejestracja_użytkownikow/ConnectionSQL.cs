@@ -14,7 +14,7 @@ namespace Rejestracja_użytkownikow
         public static event Connection ConnectionEvent;
 
         //Łączenie z bazą danych
-        public static System.Data.SqlClient.SqlConnection connect_to_database(string connection_string)
+        public static System.Data.SqlClient.SqlConnection connectToDatabase(string connection_string)
         {
             System.Data.SqlClient.SqlConnection conn = new System.Data.SqlClient.SqlConnection(connection_string);
             try
@@ -23,26 +23,26 @@ namespace Rejestracja_użytkownikow
                 ConnectionArgs args = new ConnectionArgs();
                 args.message = "Połączono!";
                 args.connect_to = conn.ServerVersion;
-                ConnectionEvent += ConnectionSQL_ConnectionEvent;
+                ConnectionEvent += ConnectionSQLConnectionEvent;
                 ConnectionEvent?.Invoke(args);
-                ConnectionEvent -= ConnectionSQL_ConnectionEvent;
+                ConnectionEvent -= ConnectionSQLConnectionEvent;
             }
             catch (Exception e)
             {
-                ConnectionEvent += ErrorConnectionSQL_ConnectionEvent;
+                ConnectionEvent += ErrorConnectionSQLConnectionEvent;
                 ConnectionArgs args = new ConnectionArgs();
                 args.message = e.Message;
-                ConnectionEvent -= ErrorConnectionSQL_ConnectionEvent;
+                ConnectionEvent -= ErrorConnectionSQLConnectionEvent;
             }
             return conn;
         }
 
-        private static void ConnectionSQL_ConnectionEvent(ConnectionArgs args)
+        private static void ConnectionSQLConnectionEvent(ConnectionArgs args)
         {
             System.Windows.Forms.MessageBox.Show("Connected to: " + args.connect_to, "Connection state", System.Windows.Forms.MessageBoxButtons.OK);
         }
 
-        private static void ErrorConnectionSQL_ConnectionEvent(ConnectionArgs args)
+        private static void ErrorConnectionSQLConnectionEvent(ConnectionArgs args)
         {
             System.Windows.Forms.MessageBox.Show(args.message, "Connection state", System.Windows.Forms.MessageBoxButtons.OK);
         }

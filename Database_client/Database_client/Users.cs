@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Rejestracja_użytkownikow
 {
-    class Users
+    public class Users
     {
         string user_name;
-        SecureString password;
+        string password;
         string real_name;
         int age;
         string email;
@@ -20,7 +20,7 @@ namespace Rejestracja_użytkownikow
             Console.Write("User name: ");
             user_name = Console.ReadLine();
             Console.Write("Password: ");
-            password = Security.hidePassword();
+            password = Security.ComputeSha256Hash(Security.hidePassword());
             Console.Write("Real name: ");
             real_name = Console.ReadLine();
             Console.Write("Age: ");
@@ -29,28 +29,25 @@ namespace Rejestracja_użytkownikow
             email = Console.ReadLine();
         }
 
-        public string get_user_name()
+        public string getUserName()
         {
             return user_name;
         }
-        public string get_real_name()
+        public string getRealName()
         {
             return real_name;
         }
-        public SecureString get_password()
+        public string getPassword()
         {
             return password;
         }
-        public int get_age()
+        public int getAge()
         {
-            get:
-            {
                 return age;
-            }
         }
-        public string get_email()
+        public string getEmail()
         {
-            return this.email;
+            return email;
         }
     }
 }

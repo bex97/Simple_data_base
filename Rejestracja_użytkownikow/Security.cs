@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Net;
 
 namespace Rejestracja_użytkownikow
 {
@@ -33,7 +34,7 @@ namespace Rejestracja_użytkownikow
             return password;
         }
 
-        static public bool IsEqual(SecureString ss1, SecureString ss2)
+        static public bool isEqual(SecureString ss1, SecureString ss2)
         {
             IntPtr bstr1 = IntPtr.Zero;
             IntPtr bstr2 = IntPtr.Zero;
@@ -61,5 +62,20 @@ namespace Rejestracja_użytkownikow
                 if (bstr1 != IntPtr.Zero) Marshal.ZeroFreeBSTR(bstr1);
             }
         }
+
+        static public string secureStringintoString(SecureString sec_str)
+        {
+            string str = new NetworkCredential("", sec_str).Password;
+
+            return str;
+        }
+
+        static public SecureString stringToSecureString(string str)
+        {
+            SecureString sec_str = new NetworkCredential("", str).SecurePassword;
+
+            return sec_str;
+        }
+
     }
 }
