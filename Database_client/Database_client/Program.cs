@@ -44,7 +44,7 @@ namespace Rejestracja_użytkownikow
                                 //Wysyłanie new user przez TCP/IP
                                 cl.send(new_user);
                                 //Sprawdzenie odpowiedzi z serwera
-                                cl.recive();
+                                if (cl.recive() == "true") { Console.WriteLine("Udało się zalogować!"); register_state = true; }
                             }
                             catch (UserNameAlreadyExistException e)
                             {
@@ -96,10 +96,12 @@ namespace Rejestracja_użytkownikow
                             Console.WriteLine("\b\bSerwerFTP");
                             Console.WriteLine("Podaj sciezke pliku: ");
                             string path = Console.ReadLine();
+                            string[] name = path.Split('\\');
+                            string file_name = name[name.Length - 1];
                             //1 opcja
                             FileStream fs = File.Open(@path, FileMode.Open);
                             BinaryReader binary_reader = new BinaryReader(fs);
-                            cl.send(binary_reader, (int)fs.Length);
+                            cl.send(file_name, binary_reader, (int)fs.Length);
                             fs.Close();
 
                             break;

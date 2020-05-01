@@ -10,12 +10,12 @@ namespace Rejestracja_użytkownikow
     public class Users
     {
         string user_name;
-        SecureString password;
+        string password;
         string real_name;
         int age;
         string email;
 
-        public Users(string un, SecureString pass, string rn, int a, string e)
+        public Users(string un, string pass, string rn, int a, string e)
         {
             user_name = un;
             password = pass;
@@ -32,7 +32,7 @@ namespace Rejestracja_użytkownikow
         {
             return real_name;
         }
-        public SecureString getPassword()
+        public string getPassword()
         {
             return password;
         }

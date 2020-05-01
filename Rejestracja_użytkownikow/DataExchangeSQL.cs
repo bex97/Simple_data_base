@@ -21,7 +21,7 @@ namespace Rejestracja_użytkownikow
 
             var com = new System.Data.SqlClient.SqlCommand(insert, conn);
             com.Parameters.AddWithValue("@UserName", new_user.getUserName());
-            com.Parameters.AddWithValue("@Password", new NetworkCredential("", new_user.getPassword()).Password);
+            com.Parameters.AddWithValue("@Password", new_user.getPassword());
             com.Parameters.AddWithValue("@RealName", new_user.getRealName());
             com.Parameters.AddWithValue("@Age", new_user.getAge());
             com.Parameters.AddWithValue("@Email", new_user.getEmail());
@@ -35,7 +35,6 @@ namespace Rejestracja_użytkownikow
                 MessageBox.Show(e.Message+ "\nSpróbuj ponownie", "Stan rejestracji", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            return false;
         }
 
         static public bool insertIntoUsersInfoTable(Users new_user, System.Data.SqlClient.SqlConnection conn)
@@ -44,7 +43,7 @@ namespace Rejestracja_użytkownikow
                                  "VALUES (@UserName, @Password)";
             var com = new System.Data.SqlClient.SqlCommand(insert2, conn);
             com.Parameters.AddWithValue("@UserName", new_user.getUserName());
-            com.Parameters.AddWithValue("@Password", new NetworkCredential("", new_user.getPassword()).Password);
+            com.Parameters.AddWithValue("@Password", new_user.getPassword());
             try
             {
                 com.ExecuteNonQuery();
@@ -56,10 +55,9 @@ namespace Rejestracja_użytkownikow
                 MessageBox.Show(e.Message + "\nSpróbuj ponownie", "Stan rejestracji", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            return false;
         }
 
-        static public bool GetAccesToAccount(string user_name, SecureString password, System.Data.SqlClient.SqlConnection conn)
+        static public bool GetAccesToAccount(string user_name, string password, System.Data.SqlClient.SqlConnection conn)
         {
             
             string get_info_string = "SELECT Password From Users WHERE UserName='"+user_name+"'";
@@ -68,7 +66,7 @@ namespace Rejestracja_użytkownikow
             if (result.HasRows) 
             {
                 result.Read();
-                if(Security.isEqual(new NetworkCredential("",result.GetValue(0).ToString()).SecurePassword,password))
+                if(result.GetValue(0).ToString().Equals(password))
                 {
                     
                     Login += Succesfull_login;

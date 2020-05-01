@@ -19,7 +19,7 @@ namespace Rejestracja_użytkownikow
             
 
             string conn_string = @" Data Source = (LocalDB)\MSSQLLocalDB; " +
-                                 @" AttachDbFilename = D:\\Projekty\C#\Rejestracja_użytkownikow\Rejestracja_użytkownikow\Database1.mdf;" +
+                                 @" AttachDbFilename = C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\Database1.mdf; " +
                                  @" Integrated Security = True";
             System.Data.SqlClient.SqlConnection conn =  ConnectionSQL.connectToDatabase(conn_string);
 
@@ -37,8 +37,9 @@ namespace Rejestracja_użytkownikow
                         try
                         {
                             new_user = sw.reciveUser();
-                            new_user.toString();
                             DataExchangeSQL.newUserRegister(new_user, conn);
+                            sw.send("true", false);
+                            register_state = true; 
                         }
                         catch (UserNameAlreadyExistException e)
                         {
@@ -50,10 +51,10 @@ namespace Rejestracja_użytkownikow
                 }
                 else
                 {
-                    SecureString password;
+                    string password;
                     try
                     {
-                        password = Security.stringToSecureString(sw.recive());
+                        password = sw.recive();
                         DataExchangeSQL.GetAccesToAccount(user_name, password, conn);
                         login_state = true;
                         sw.send("true", false);
