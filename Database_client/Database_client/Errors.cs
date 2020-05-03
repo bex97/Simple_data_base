@@ -6,11 +6,6 @@ using System.Threading.Tasks;
 
 namespace Rejestracja_użytkownikow
 {
-    class Errors : Exception
-    {
-
-    }
-
     public class BadPasswordException : Exception
     {
         string message;

@@ -45,38 +45,34 @@ namespace Rejestracja_użytkownikow
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message, "Stan połączenia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
             }
         }
 
-        private byte[] toPackage(string message, bool e_flag)
-        {
-            byte[] data_ASCII = System.Text.Encoding.ASCII.GetBytes(message);
-            byte[] data_length = BitConverter.GetBytes(data_ASCII.Length);
-            byte[] package = new byte[5 + message.Length];
-            data_length.CopyTo(package, 0);
-            bool exception_flag = e_flag;
-            BitConverter.GetBytes(exception_flag).CopyTo(package, 4);
-            data_ASCII.CopyTo(package, 5);
-            return package;
-        }
-
-        public void send(string message, bool e_flag)
+        public void send(string message)
         {
             int percentage = 0;
-            byte[] package = toPackage(message, e_flag);
+            byte[] package = System.Text.Encoding.ASCII.GetBytes(message);
 
             NetworkStream ns = client.GetStream();
             int bytes_left = package.Length-4, bytes_send = 0, buffer_size = 1024;
 
-            ns.Write(package, 0, 4);
+            try
+            {
+                ns.Write(package, 0, 4);
+            }
+            catch (Exception)
+            {
+                
+            }   
+            
             Console.Write("Data send: 0%");
             while (bytes_left > 0)
             {
                 try
                 {
                     int next_package_size = bytes_left > buffer_size ? buffer_size : bytes_left;
-                    ns.Write(package, bytes_send+4, next_package_size);
+                    ns.Write(package, bytes_send + 4, next_package_size);
                     bytes_send += next_package_size;
                     bytes_left -= next_package_size;
                     if (percentage > 9)
@@ -92,13 +88,11 @@ namespace Rejestracja_użytkownikow
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message, "Stan wysyłania", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 }
             }
             ns.Flush();
             Console.WriteLine();
-            //Zdarzenie - wysłanie całego pakietu danych
         }
 
         public string recive()
@@ -110,9 +104,18 @@ namespace Rejestracja_użytkownikow
             byte[] size = new byte[4];
             NetworkStream ns = client.GetStream();
 
-            ns.Read(size, 0, 4);
+            try
+            {
+                ns.Read(size, 0, 4);
+            }
+            catch (Exception)
+            {
+                
+            }
+           
             data_size = BitConverter.ToInt32(size, 0);
             byte[] data_ASCII = new byte[data_size];
+
             Console.Write("Data recived: 0%");
             while (data_size - data_recived > 0)
             {
@@ -135,11 +138,11 @@ namespace Rejestracja_użytkownikow
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message, "Stan wysyłania", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 }
             }
             Console.WriteLine();
+            ns.Flush();
             return message;
         }
 
@@ -154,11 +157,26 @@ namespace Rejestracja_użytkownikow
             byte[] name_size = new byte[20];
             NetworkStream ns = client.GetStream();
 
-            ns.Read(size, 0, 4);
-            data_size = BitConverter.ToInt32(size, 0);
-            ns.Read(name_size, 0, 20);
-            name_length = BitConverter.ToInt32(name_size, 0);
+            try
+            {
+                ns.Read(size, 0, 4);
+                data_size = BitConverter.ToInt32(size, 0);
+            }
+            catch (Exception)
+            {
+                data_size = 0;
+            }
 
+            try
+            {
+                ns.Read(name_size, 0, 20);
+                name_length = BitConverter.ToInt32(name_size, 0);
+            }
+            catch (Exception)
+            {
+                name_length = 0;
+            }
+           
             byte[] data_ASCII = new byte[data_size];
             Console.Write("Data recived: 0%");
             while (data_size - data_recived > 0)
@@ -178,18 +196,16 @@ namespace Rejestracja_użytkownikow
                     }
                     Console.Write("{0}%", (int)((double)data_recived / (double)data_size * 100));
                     percentage = (int)((double)data_recived / (double)data_size * 100);
-                   
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message, "Stan wysyłania", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 }
             }
             Console.WriteLine();
 
             string name = System.Text.Encoding.ASCII.GetString(data_ASCII, 0, name_length);
-            FileStream file = File.Create(@"C:\Users\Benio\Desktop\Server_files\"+name);
+            FileStream file = File.Create(@"C:\Users\Benio\Desktop\Server_file\"+name);
             BinaryWriter bw = new BinaryWriter(file);
             bw.Write(data_ASCII, name_length, data_ASCII.Length-name_length);
 
@@ -200,6 +216,7 @@ namespace Rejestracja_użytkownikow
             fs.Write(System.Text.Encoding.ASCII.GetString(data_ASCII));
             */
 
+            ns.Flush();
             file.Close();
         }
 
@@ -211,18 +228,17 @@ namespace Rejestracja_użytkownikow
             byte[] size = new byte[4];
             NetworkStream ns = client.GetStream();
 
-
             try
             {
                 ns.Read(size, 0, 4);
             }
             catch (Exception e)
             {
-                //Obsługa błędu
+                
             }
-            
             data_size = BitConverter.ToInt32(size, 0);
             byte[] data = new byte[data_size];
+
             Console.Write("Data recived: 0%");
             percentage = (int)((double)data_recived / (double)data_size * 100);
             while (data_size - data_recived > 0)
@@ -245,16 +261,15 @@ namespace Rejestracja_użytkownikow
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show(e.Message, "Stan wysyłania", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 }
             }
-
             
             message = System.Text.Encoding.ASCII.GetString(data);
             string[] split_data = message.Split('/');
             Users nu = new Users(split_data[0], split_data[1], split_data[2], Convert.ToInt32(split_data[3]), split_data[4]);
 
+            ns.Flush();
             Console.WriteLine();
             return nu;
         }

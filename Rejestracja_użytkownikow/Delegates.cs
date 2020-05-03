@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Rejestracja_użytkownikow
 {
     //Delegaty
+
     //Obsługa połączenia
     public delegate void Connection(ConnectionArgs args);
     //Obsługa logowania

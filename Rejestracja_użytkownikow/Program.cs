@@ -4,75 +4,149 @@ using System.Security;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace Rejestracja_użytkownikow
 {
     class Program
     {
-        
-        static void Main(string[] args)
+        static public void rejestracja(Serwer sw, System.Data.SqlClient.SqlConnection conn)
         {
-            Serwer sw = new Serwer(IPAddress.Any);
-            sw.connect();
-            
+            try
+            {
+                Users new_user = reciveUser(sw);
+                DataExchangeSQL.newUserRegister(new_user, conn);
+                sw.send("true");
+            }
+            catch (Exception)
+            {
+                
+            }
+        }
 
+        static public void logowanie(Serwer sw, System.Data.SqlClient.SqlConnection conn, string user_name)
+        {
+            try
+            {
+                string password = sw.recive();
+                DataExchangeSQL.GetAccesToAccount(user_name, password, conn);
+                sw.send("true");
+            }
+            catch (Exception)
+            {
+                
+            }
+        }
+
+        static public void sendMessage(Serwer sw)
+        {
+            string message = Console.ReadLine();
+            sw.send(message);
+        }
+
+        static public string reciveMessage(Serwer sw)
+        {
+            return sw.recive();
+        }
+
+        static public Users reciveUser(Serwer sw)
+        {
+            return sw.reciveUser();
+        }
+
+        static public void reciveFile(Serwer sw)
+        {
+            sw.recive_file();
+        }
+
+        static public Serwer new_connection()
+        {
+            return new Serwer(IPAddress.Any);
+        }
+
+        static public void action(Serwer sw)
+        {
             string conn_string = @" Data Source = (LocalDB)\MSSQLLocalDB; " +
-                                 @" AttachDbFilename = C:\Users\Benio\Projekty\VisualStudio\C#\BazaDanych\Rejestracja_użytkownikow\Database1.mdf; " +
-                                 @" Integrated Security = True";
-            System.Data.SqlClient.SqlConnection conn =  ConnectionSQL.connectToDatabase(conn_string);
+                                @" AttachDbFilename = D:\Projekty\C#\Rejestracja_użytkownikow\Rejestracja_użytkownikow\Database1.mdf; " +
+                                @" Integrated Security = True";
+            System.Data.SqlClient.SqlConnection conn = ConnectionSQL.connectToDatabase(conn_string);
 
-            
-            bool login_state = false;
+
+            /*bool login_state = false;
             do
             {
-                string user_name = sw.recive();
+                string user_name = reciveMessage(sw);
                 if (user_name == "new user")
                 {
                     bool register_state = false;
                     do
                     {
-                        Users new_user;
                         try
                         {
-                            new_user = sw.reciveUser();
-                            DataExchangeSQL.newUserRegister(new_user, conn);
-                            sw.send("true", false);
-                            register_state = true; 
+                            //Rejestracja nowego użytkownika
+                            
                         }
                         catch (UserNameAlreadyExistException e)
                         {
-                            MessageBox.Show(e.Message, "Stan rejestracji", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            sw.send(e.Message, true);
+
                         }
                         
                     } while (!register_state);
                 }
                 else
                 {
-                    string password;
                     try
                     {
-                        password = sw.recive();
-                        DataExchangeSQL.GetAccesToAccount(user_name, password, conn);
-                        login_state = true;
-                        sw.send("true", false);
+                        //logowanie 
                     }
                     catch (BadPasswordException e)
                     {
-                        MessageBox.Show(e.Message, "Stan logowania", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        sw.send(e.Message, true);
-                        Console.Clear();
+                        
                     }
 
                 }
-            } while (!login_state);
+            } while (!login_state);*/
 
-            sw.recive_file();
-           
-            Console.ReadKey();
+            bool escape = false;
+            do
+            {
+                string i = sw.recive();
+                switch (Convert.ToInt32(i))
+                {
+                    case 1:
+                        {
+                            Console.WriteLine("Email");
+                            break;
+                        }
+                    case 2:
+                        {
+                            reciveFile(sw);
+                            break;
+                        }
+                    case 3:
+                        {
+                            escape = true;
+                            break;
+                        }
+                    default:
+                        break;
+                }
 
+            } while (!escape);
+            Console.WriteLine("See you later!");
+        }
+    
+
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Serwer sw = new_connection();
+                sw.connect();
+                Thread t1 = new Thread(() => { action(sw); });
+                t1.Start();
+            }
         }
 
     }

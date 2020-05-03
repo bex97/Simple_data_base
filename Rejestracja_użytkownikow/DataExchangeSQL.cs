@@ -32,7 +32,6 @@ namespace Rejestracja_użytkownikow
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message+ "\nSpróbuj ponownie", "Stan rejestracji", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
@@ -51,8 +50,6 @@ namespace Rejestracja_użytkownikow
             }
             catch (Exception e)
             {
-
-                MessageBox.Show(e.Message + "\nSpróbuj ponownie", "Stan rejestracji", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
@@ -68,23 +65,19 @@ namespace Rejestracja_użytkownikow
                 result.Read();
                 if(result.GetValue(0).ToString().Equals(password))
                 {
-                    
-                    Login += Succesfull_login;
-                    OnLogin();
-                    Login -= Succesfull_login;
                     result.Close();
                     return true;
                 }
                 else
                 {
                     result.Close();
-                    throw new BadPasswordException("Podano zły login lub hasło");
+                    throw new BadPasswordException("Podano złe hasło");
                 }
             }
             else
             {
                 result.Close();
-                throw new BadPasswordException("Podano zły login lub hasło");
+                throw new BadPasswordException("Podano zły login");
             }
         }
 
@@ -104,33 +97,9 @@ namespace Rejestracja_użytkownikow
                 result.Close();
                 if (!insertIntoUsersTable(new_user, conn)) return false;
                 if (!insertIntoUsersInfoTable(new_user, conn)) return false;
-
-                Register += Succesfull_register;
-                OnRegister();
-                Register -= Succesfull_register;
+                
                 return true;
             }
         }
-
-        static public void OnLogin()
-        {
-            Login?.Invoke();
-        }
-
-        static public void OnRegister()
-        {
-            Register?.Invoke();
-        }
-
-        static public void Succesfull_login()
-        {
-            MessageBox.Show("Zalogowałeś się!", "Stan logowania", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        static public void Succesfull_register()
-        {
-            MessageBox.Show("Zarejestrowałeś się!\nMożesz się teraz zalogować!", "Stan rejstracji", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
     }
 }

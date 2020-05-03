@@ -1,0 +1,7 @@
+D:\Projekty\C#\Rejestracja_użytkownikow\Database_client\Database_client\obj\Debug\Database_client.csprojAssemblyReference.cache
+D:\Projekty\C#\Rejestracja_użytkownikow\Database_client\Database_client\obj\Debug\Database_client.csproj.CoreCompileInputs.cache
+D:\Projekty\C#\Rejestracja_użytkownikow\Database_client\Database_client\bin\Debug\Database_client.exe.config
+D:\Projekty\C#\Rejestracja_użytkownikow\Database_client\Database_client\bin\Debug\Database_client.exe
+D:\Projekty\C#\Rejestracja_użytkownikow\Database_client\Database_client\bin\Debug\Database_client.pdb
+D:\Projekty\C#\Rejestracja_użytkownikow\Database_client\Database_client\obj\Debug\Database_client.exe
+D:\Projekty\C#\Rejestracja_użytkownikow\Database_client\Database_client\obj\Debug\Database_client.pdb

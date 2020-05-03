@@ -26,7 +26,7 @@ namespace Rejestracja_użytkownikow
                 }
                 if(key.Key == ConsoleKey.Backspace && password.Length>0)
                 {
-                    password.Remove(password.Length-1);
+                    password = password.Remove(password.Length - 1);
                     Console.Write("\b \b");
                 }
 
