@@ -67,10 +67,7 @@ namespace Rejestracja_użytkownikow
 
         static public void action(Serwer sw)
         {
-            string conn_string = @" Data Source = (LocalDB)\MSSQLLocalDB; " +
-                                @" AttachDbFilename = D:\Projekty\C#\Rejestracja_użytkownikow\Rejestracja_użytkownikow\Database1.mdf; " +
-                                @" Integrated Security = True";
-            System.Data.SqlClient.SqlConnection conn = ConnectionSQL.connectToDatabase(conn_string);
+            
 
 
             /*bool login_state = false;
@@ -140,11 +137,19 @@ namespace Rejestracja_użytkownikow
 
         static void Main(string[] args)
         {
+            string conn_string = @" Data Source = (LocalDB)\MSSQLLocalDB; " +
+                                @" AttachDbFilename = D:\Projekty\C#\Rejestracja_użytkownikow\Rejestracja_użytkownikow\Database1.mdf; " +
+                                @" Integrated Security = True";
+            System.Data.SqlClient.SqlConnection conn = ConnectionSQL.connectToDatabase(conn_string);
+
+            int counter = 0;
             while (true)
             {
+                counter++;
                 Serwer sw = new_connection();
                 sw.connect();
-                Thread t1 = new Thread(() => { action(sw); });
+                Console.WriteLine("Polaczono z nowym klientem nr " + counter);
+                Thread t1 = new Thread(new ThreadStart( () => { action(sw); }));
                 t1.Start();
             }
         }

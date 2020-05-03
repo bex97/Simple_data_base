@@ -16,15 +16,18 @@ namespace Rejestracja_użytkownikow
         public Serwer(string ip)
         {
             ip_address = IPAddress.Parse(ip);
-            ip_end_point = new IPEndPoint(ip_address, 5000);
+            ip_end_point = new IPEndPoint(ip_address, 50000);
         }
-
         
-
         public Serwer(IPAddress ip)
         {
             ip_address = ip;
-            ip_end_point = new IPEndPoint(ip_address, 5000);
+            ip_end_point = new IPEndPoint(ip_address, 50000);
+        }
+
+        public void close()
+        {
+            client.Close();
         }
 
         public IPAddress GetIPAddress()
@@ -40,7 +43,7 @@ namespace Rejestracja_użytkownikow
                 Console.WriteLine("Waiting for connection...");
                 listener.Start();
                 client = listener.AcceptTcpClient();
-                MessageBox.Show("Połączono z", "Stan połączenia", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Połączono", "Stan połączenia", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 //Zdarzenie poprawnego połączenia
             }
             catch (Exception e)
@@ -103,6 +106,7 @@ namespace Rejestracja_użytkownikow
             
             byte[] size = new byte[4];
             NetworkStream ns = client.GetStream();
+
 
             try
             {
@@ -216,7 +220,7 @@ namespace Rejestracja_użytkownikow
             fs.Write(System.Text.Encoding.ASCII.GetString(data_ASCII));
             */
 
-            ns.Flush();
+            //ns.Flush();
             file.Close();
         }
 
@@ -230,7 +234,7 @@ namespace Rejestracja_użytkownikow
 
             try
             {
-                ns.Read(size, 0, 4);
+                client.Receive(size, 0, 4, 0);
             }
             catch (Exception e)
             {

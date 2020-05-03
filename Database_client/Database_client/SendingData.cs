@@ -16,12 +16,12 @@ namespace Rejestracja_użytkownikow
         public Client(string ip)
         {
             ip_address = IPAddress.Parse(ip);
-            ip_end_point = new IPEndPoint(ip_address, 5000);
+            ip_end_point = new IPEndPoint(ip_address, 50000);
         }
 
         public Client(IPAddress ip)
         {
-            ip_end_point = new IPEndPoint(ip, 5000);
+            ip_end_point = new IPEndPoint(ip, 50000);
         }
 
 
@@ -29,8 +29,7 @@ namespace Rejestracja_użytkownikow
         {
             try
             {
-                client = new TcpClient();
-                client.Connect(ip_end_point);
+                client = new TcpClient("127.0.0.1", 50000);
                 return true;
             }
             catch (Exception e)

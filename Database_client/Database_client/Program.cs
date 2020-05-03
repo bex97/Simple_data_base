@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using System.Windows.Forms;
 using System.IO;
 using System.Threading;
@@ -80,11 +82,11 @@ namespace Rejestracja_użytkownikow
             string user_name;
             bool login_state = false;
             Client cl = new Client("127.0.0.1");
-
+            
             if (cl.connect())
             {
-                Console.WriteLine("Połączono!");
-                /*do
+               /* Console.WriteLine("Połączono!");
+                do
                 {
                     Console.WriteLine("If u don't have an account please type \"new user\"");
                     Console.Write("Login: ");
@@ -146,6 +148,9 @@ namespace Rejestracja_użytkownikow
             {
                 Console.WriteLine("Blad polaczenia! Uruchom ponownie aplikacje...\nJesli problem nadal wystepuje skantaktuj sie z dostawca...");
             }
+            
+
+            Console.ReadKey();
         }
 
     }
